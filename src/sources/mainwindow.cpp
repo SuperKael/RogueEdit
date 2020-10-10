@@ -83,9 +83,29 @@ void MainWindow::updateCharacterValues()
     // Update spinBoxes
     for (int i = 0; i < Strings::CHARACTER_TAB_NUM_SPINBOXES; i++)
     {
+        if (Strings::cSpinBoxSpecifiers[i] == Strings::characterLevelSpecifier ||
+                Strings::cSpinBoxSpecifiers[i] == Strings::characterExperienceSpecifier) continue;
         spinBox = this->findChild<QSpinBox*>(Strings::cSpinBoxObjectNames[i]);
         spinBox->setValue((*this->_e->characterValues)[Strings::cSpinBoxSpecifiers[i]].toInt());
     }
+
+    exp = (*this->_e->characterValues)[Strings::characterExperienceSpecifier].toInt();
+    level = 1;
+    int levelCap = 10;
+    int pastCap = 0;
+    int num2 = 0;
+    while (exp >= levelCap)
+    {
+        level++;
+        pastCap = levelCap;
+        num2 += level * 3;
+        levelCap = pastCap + 20 + num2;
+    }
+    exp -= pastCap;
+    spinBox = this->findChild<QSpinBox*>(Strings::characterLevelObjectName);
+    spinBox->setValue(level);
+    spinBox = this->findChild<QSpinBox*>(Strings::characterExperienceObjectName);
+    spinBox->setValue(exp);
 }
 
 void MainWindow::updateCharacterItemBrowser()
@@ -103,7 +123,7 @@ void MainWindow::updateCharacterItemBrowser()
 
     // Update the LineEdit if an item is already selected
     if (itemBrowser->currentItem())
-        this->findChild<QLineEdit*>(Strings::itemNameEditObjectName)->setText(itemBrowser->currentItem()->text(0));
+        this->updateiSpinandComboBoxes(itemBrowser->currentItem());
 }
 
 void MainWindow::loadTopLevelChildren(QTreeWidget* itemBrowser,
@@ -127,11 +147,19 @@ void MainWindow::loadTopLevelChildren(QTreeWidget* itemBrowser,
     for (int i = beginIndex; i < endIndex; i++)
     {
         // Load the ID and the corresponding item string
-        it = itemNamesMap->find(itemIDArray[i]);
-        if (it == itemNamesMap->end())
+        if (itemIDArray[i] == 0 || (type != Strings::combatChipSpecifier && (this->_e->itemSettings[i].quantity.compare("0") == 0)))
             value = Strings::noItemPlaceholder.toStdString();
         else
-            value = it->second;
+        {
+            it = itemNamesMap->find(itemIDArray[i]);
+            if (it == itemNamesMap->end())
+            {
+                value = this->_e->loadReservedName(itemIDArray[i], type == Strings::combatChipSpecifier);
+                if (value.compare("") == 0) value = Strings::unknownItemPlaceholder.toStdString() + std::to_string(itemIDArray[i]);
+            }
+            else
+                value = it->second;
+        }
 
         // Update the text in the item browser
         child = topLevelItem->child((beginIndex == 0) ? i : i % beginIndex); // Avoid accidentally doing modulo 0
@@ -319,13 +347,10 @@ void MainWindow::on_spinBoxHealthVal_valueChanged(const QString &newHealth)
     this->simpleSpinBoxChangedHandler(newHealth, Strings::characterCurrentHealthSpecifier);
 }
 
-
 void MainWindow::on_spinBoxLevelVal_valueChanged(const QString& newCharacterLevel)
 {
-    this->simpleSpinBoxChangedHandler(newCharacterLevel, Strings::characterLevelSpecifier);
-
     // Calculate experience
-    int level = newCharacterLevel.toInt();
+    level = newCharacterLevel.toInt();
     int requiredExperience = 36;
     int previousExperienceGain = 26;
 
@@ -341,7 +366,29 @@ void MainWindow::on_spinBoxLevelVal_valueChanged(const QString& newCharacterLeve
         }
     }
 
-    this->simpleSpinBoxChangedHandler(QString::number(requiredExperience), Strings::characterExperienceSpecifier);
+    this->simpleSpinBoxChangedHandler(QString::number(requiredExperience + exp), Strings::characterExperienceSpecifier);
+}
+
+void MainWindow::on_spinBoxExpVal_valueChanged(const QString& newCharacterExperience)
+{
+    // Calculate experience
+    exp = newCharacterExperience.toInt();
+    int requiredExperience = 36;
+    int previousExperienceGain = 26;
+
+    // Don't ask me why the experience formula is so odd
+    if (level == 1) requiredExperience = 0;
+    else if (level == 2) requiredExperience = 10;
+    else
+    {
+        for (int i = 3; i < level; i++)
+        {
+            previousExperienceGain += 3 * i;
+            requiredExperience += previousExperienceGain;
+        }
+    }
+
+    this->simpleSpinBoxChangedHandler(QString::number(requiredExperience + exp), Strings::characterExperienceSpecifier);
 }
 
 void MainWindow::on_spinBoxAllegianceLevelVal_valueChanged(const QString& newAllegianceLevel)
@@ -357,23 +404,23 @@ QCompleter* MainWindow::determineCompleter(QTreeWidgetItem* currentItem)
     QString typeName = currentItem->text(1);
 
     if (parentName == Strings::itemBrowserCombatChipsTitle)
-        return &Items::combatChipCompleter;
+        return new QCompleter(Items::combatChipList);
     else if (parentName == Strings::itemBrowserDronesTitle)
-        return &Items::droneCompleter;
+        return new QCompleter(Items::droneList);
     else if (parentName == Strings::itemBrowserInventoryTitle)
-        return &Items::itemCompleter;
+        return new QCompleter(Items::itemList);
     else if (parentName == Strings::itemBrowserEquippedTitle)
     {
         if (typeName == Strings::itemBrowserEquippedWeaponTitle)
-            return &Items::weaponCompleter;
+            return new QCompleter(Items::weaponList);
         else if (typeName == Strings::itemBrowserEquippedShieldTitle)
-            return &Items::shieldCompleter;
+            return new QCompleter(Items::shieldList);
         else if (typeName == Strings::itemBrowserEquippedArmorTitle)
-            return &Items::armorCompleter;
+            return new QCompleter(Items::armorList);
         else if (typeName == Strings::itemBrowserEquippedHelmetTitle)
-            return &Items::helmCompleter;
+            return new QCompleter(Items::helmList);
         else if (typeName == Strings::itemBrowserEquippedRingOneTitle || typeName == Strings::itemBrowserEquippedRingTwoTitle)
-            return &Items::ringCompleter;
+            return new QCompleter(Items::ringList);
     }
 
     // If nothing worked, be very sad
@@ -387,18 +434,44 @@ void MainWindow::updateiSpinandComboBoxes(QTreeWidgetItem* current)
     QGroupBox* itemEditor = this->findChild<QGroupBox*>(Strings::itemEditorObjectName);
     QList<QComboBox*> iComboBoxes = itemEditor->findChildren<QComboBox*>();
     QList<QSpinBox*> iSpinBoxes = itemEditor->findChildren<QSpinBox*>();
-    std::string specifier;
+    std::string specifier, value;
 
     for (int i = 0; i < iComboBoxes.length(); i++)
     {
         specifier = this->_e->currentID + current->text(2).toStdString() + Strings::iComboBoxSpecifiers[i];
-        iComboBoxes[i]->setCurrentIndex(iComboBoxes[i]->findText(QString::fromStdString(Strings::iComboBoxArrays[i][std::stoi(this->_e->loadValue(specifier))])));
+        value = this->_e->loadValue(specifier);
+        if (value != "")
+            iComboBoxes[i]->setCurrentIndex(iComboBoxes[i]->findText(QString::fromStdString(Strings::iComboBoxArrays[i][std::stoi(value)])));
+        else
+            iComboBoxes[i]->setCurrentIndex(iComboBoxes[i]->findText(QString::fromStdString(Strings::iComboBoxArrays[i][0])));
     }
 
+    value = this->_e->loadValue(this->_e->currentID + current->text(2).toStdString() + Strings::itemExperienceSpecifier);
+    if (value != "")
+        itemExp = std::stoi(value);
+    else
+        itemExp = 0;
+    itemLevel = this->_e->calculateItemLevelFromExperience(itemExp);
+    itemExp -= this->_e->calculateItemExperienceFromLevel(itemLevel);
     for (int i = 0; i < iSpinBoxes.length(); i++)
     {
-        specifier = this->_e->currentID + current->text(2).toStdString() + Strings::iSpinBoxSpecifiers[i];
-        iSpinBoxes[i]->setValue(std::stoi(this->_e->loadValue(specifier)));
+        if (iSpinBoxes[i]->objectName() == Strings::itemLevelEditObjectName)
+        {
+            iSpinBoxes[i]->setValue(itemLevel);
+        }
+        else if (iSpinBoxes[i]->objectName() == Strings::itemExpEditObjectName)
+        {
+            iSpinBoxes[i]->setValue(itemExp);
+        }
+        else
+        {
+            specifier = this->_e->currentID + current->text(2).toStdString() + Strings::iSpinBoxSpecifiers[i];
+            value = this->_e->loadValue(specifier);
+            if (value != "")
+                iSpinBoxes[i]->setValue(std::stoi(value));
+            else
+                iSpinBoxes[i]->setValue(0);
+        }
     }
 }
 
@@ -496,7 +569,31 @@ void MainWindow::on_lineEditItemName_editingFinished()
         }
     }
 
-    if (newValue == -1) return;  // Stop if the new name does not correspond to an item
+    if (newValue == -1) // Try to load as reserved registry name
+    {
+        newValue = this->_e->loadReservedID(newName, isCombatChip);
+    }
+
+    if (newValue == -1) // Try to load as ID
+    {
+        try
+        {
+            newValue = std::stoi(newName);
+            if (newValue != 0)
+            {
+                std::unordered_map<int, std::string>::const_iterator it = itemNameMap->find(newValue);
+                newName = it != itemNameMap->end() ? it->second : this->_e->loadReservedName(newValue, isCombatChip);
+                if (newName.compare("") == 0) newName = Strings::unknownItemPlaceholder.toStdString() + std::to_string(newValue);
+            }
+        }
+        catch (const std::invalid_argument& e) {}
+    }
+
+    if (newValue == -1)
+    {
+        this->findChild<QLineEdit*>(Strings::itemNameEditObjectName)->setText(current->text(0));
+        return;
+    }
 
     // Determine the old value
     std::string index = current->text(2).toStdString();
@@ -527,11 +624,28 @@ void MainWindow::on_spinBoxItemLevelEdit_valueChanged(const QString& newLevel)
     std::string oldValue = this->_e->itemSettings[std::stoi(index)].exp;
 
     // Determine the new value
-    int newValue = this->_e->calculateItemExperienceFromLevel(newLevel.toInt());
+    itemLevel = newLevel.toInt();
+    int newValue = this->_e->calculateItemExperienceFromLevel(itemLevel);
 
     // Replace the value and update itemSettings
-    this->_e->replaceValue(this->_e->currentID + index + Strings::itemExperienceSpecifier, oldValue, std::to_string(newValue));
-    this->_e->itemSettings[std::stoi(index)].exp = std::to_string(newValue);
+    this->_e->replaceValue(this->_e->currentID + index + Strings::itemExperienceSpecifier, oldValue, std::to_string(newValue + itemExp));
+    this->_e->itemSettings[std::stoi(index)].exp = std::to_string(newValue + itemExp);
+}
+
+void MainWindow::on_spinBoxItemExpEdit_valueChanged(const QString& newExperience)
+{
+    // Find the old value
+    QTreeWidgetItem* current = this->findChild<QTreeWidget*>(Strings::itemBrowserObjectName)->currentItem();
+    std::string index = current->text(2).toStdString();
+    std::string oldValue = this->_e->itemSettings[std::stoi(index)].exp;
+
+    // Determine the new value
+    itemExp = newExperience.toInt();
+    int newValue = this->_e->calculateItemExperienceFromLevel(itemLevel);
+
+    // Replace the value and update itemSettings
+    this->_e->replaceValue(this->_e->currentID + index + Strings::itemExperienceSpecifier, oldValue, std::to_string(newValue + itemExp));
+    this->_e->itemSettings[std::stoi(index)].exp = std::to_string(newValue + itemExp);
 }
 
 void MainWindow::on_spinBoxItemQuantityEdit_valueChanged(const QString& newQuantity)

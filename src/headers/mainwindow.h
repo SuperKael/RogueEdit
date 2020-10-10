@@ -60,6 +60,7 @@ private slots:
     void on_spinBoxTecVal_valueChanged(const QString& newTec);
     void on_spinBoxFaiVal_valueChanged(const QString& newFai);
     void on_spinBoxLevelVal_valueChanged(const QString& newCharacterLevel);
+    void on_spinBoxExpVal_valueChanged(const QString& newCharacterExperience);
     void on_spinBoxAllegianceLevelVal_valueChanged(const QString& newAllegianceLevel);
     void on_spinBoxManaVal_valueChanged(const QString &newMana);
     void on_spinBoxHealthVal_valueChanged(const QString &newHealth);
@@ -68,11 +69,16 @@ private slots:
     void on_treeWidgetItemBrowser_currentItemChanged(QTreeWidgetItem *current);
     void on_lineEditItemName_editingFinished();
     void on_spinBoxItemLevelEdit_valueChanged(const QString& newLevel);
+    void on_spinBoxItemExpEdit_valueChanged(const QString& newExperience);
     void on_spinBoxItemQuantityEdit_valueChanged(const QString& newValue);
     void on_comboBoxItemRarityEdit_currentIndexChanged(const QString& newQuantity);
 
 private:
     Editor* _e;
     Ui::MainWindow* _ui;
+    int level;
+    int exp;
+    int itemLevel;
+    int itemExp;
 };
 #endif

@@ -72,7 +72,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tabCharacter">
          <attribute name="title">
@@ -840,7 +840,7 @@
             <x>223</x>
             <y>9</y>
             <width>232</width>
-            <height>156</height>
+            <height>170</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="layoutStats">
@@ -861,13 +861,13 @@
              <property name="minimumSize">
               <size>
                <width>230</width>
-               <height>140</height>
+               <height>168</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>230</width>
-               <height>140</height>
+               <height>168</height>
               </size>
              </property>
              <property name="title">
@@ -1547,6 +1547,62 @@
                <number>999</number>
               </property>
              </widget>
+             <widget class="QLabel" name="labelExp">
+              <property name="geometry">
+               <rect>
+                <x>117</x>
+                <y>140</y>
+                <width>35</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>35</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>35</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Exp:</string>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="spinBoxExpVal">
+              <property name="geometry">
+               <rect>
+                <x>141</x>
+                <y>138</y>
+                <width>80</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
+              </property>
+              <property name="maximum">
+               <number>2147483647</number>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+             </widget>
             </widget>
            </item>
           </layout>
@@ -1558,8 +1614,11 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
-           <layout class="QHBoxLayout" name="layoutItemEditor">
-            <item>
+           <layout class="QHBoxLayout" name="layoutItemEditor"/>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="layoutItemBrowser">
+            <item alignment="Qt::AlignHCenter|Qt::AlignTop">
              <widget class="QGroupBox" name="groupBoxItemEditor">
               <property name="enabled">
                <bool>false</bool>
@@ -1573,133 +1632,137 @@
               <property name="minimumSize">
                <size>
                 <width>215</width>
-                <height>180</height>
+                <height>254</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>215</width>
-                <height>180</height>
+                <height>254</height>
                </size>
               </property>
               <property name="title">
                <string>Item Editor</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
               <layout class="QGridLayout" name="gridLayout_2">
-               <item row="0" column="1">
-                <layout class="QHBoxLayout" name="layoutItemNameEdit">
-                 <item>
-                  <widget class="QLineEdit" name="lineEditItemName"/>
-                 </item>
-                </layout>
+               <item row="0" column="0" colspan="2">
+                <widget class="QLabel" name="labelItemName">
+                 <property name="text">
+                  <string>Item Name:</string>
+                 </property>
+                 <property name="textFormat">
+                  <enum>Qt::PlainText</enum>
+                 </property>
+                </widget>
                </item>
-               <item row="2" column="1">
-                <layout class="QHBoxLayout" name="layoutItemQuantityEdit">
-                 <item>
-                  <widget class="QSpinBox" name="spinBoxItemQuantityEdit">
-                   <property name="maximum">
-                    <number>9999</number>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+               <item row="0" column="2" colspan="2">
+                <widget class="QLineEdit" name="lineEditItemName"/>
                </item>
-               <item row="1" column="1">
-                <layout class="QHBoxLayout" name="layoutItemLevelEdit">
-                 <item>
-                  <widget class="QSpinBox" name="spinBoxItemLevelEdit">
-                   <property name="maximum">
-                    <number>10</number>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item row="0" column="0">
-                <layout class="QHBoxLayout" name="layoutItemName">
-                 <item>
-                  <widget class="QLabel" name="labelItemName">
-                   <property name="text">
-                    <string>Item Name:</string>
-                   </property>
-                   <property name="textFormat">
-                    <enum>Qt::PlainText</enum>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item row="3" column="0">
-                <layout class="QHBoxLayout" name="layoutItemRarity">
-                 <item>
-                  <widget class="QLabel" name="labelItemRarity">
-                   <property name="text">
-                    <string>Item Rarity:</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+               <item row="1" column="0" colspan="2">
+                <widget class="QLabel" name="labelItemQuantity">
+                 <property name="text">
+                  <string>Item Quantity:</string>
+                 </property>
+                </widget>
                </item>
                <item row="2" column="0">
-                <layout class="QHBoxLayout" name="layoutItemQuantity">
-                 <item>
-                  <widget class="QLabel" name="labelItemQuantity">
-                   <property name="text">
-                    <string>Item Quantity:</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <widget class="QLabel" name="labelItemLevel">
+                 <property name="text">
+                  <string>Item Lvl:</string>
+                 </property>
+                </widget>
                </item>
-               <item row="1" column="0">
-                <layout class="QHBoxLayout" name="layoutItemLevel">
-                 <item>
-                  <widget class="QLabel" name="labelItemLevel">
-                   <property name="text">
-                    <string>Item Level:</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+               <item row="2" column="1">
+                <widget class="QSpinBox" name="spinBoxItemLevelEdit">
+                 <property name="maximum">
+                  <number>10</number>
+                 </property>
+                </widget>
                </item>
-               <item row="3" column="1">
-                <layout class="QHBoxLayout" name="layoutItemRarityEdit">
+               <item row="2" column="2">
+                <widget class="QLabel" name="labelItemExp">
+                 <property name="text">
+                  <string>Item Exp:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="3">
+                <widget class="QSpinBox" name="spinBoxItemExpEdit">
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                 <property name="value">
+                  <number>0</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0" colspan="2">
+                <widget class="QLabel" name="labelItemRarity">
+                 <property name="text">
+                  <string>Item Rarity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="2" colspan="2">
+                <widget class="QComboBox" name="comboBoxItemRarityEdit">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
                  <item>
-                  <widget class="QComboBox" name="comboBoxItemRarityEdit">
-                   <property name="styleSheet">
-                    <string notr="true"/>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string>Normal</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Rare</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Epic</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Legendary</string>
-                    </property>
-                   </item>
-                  </widget>
+                  <property name="text">
+                   <string>Normal</string>
+                  </property>
                  </item>
-                </layout>
+                 <item>
+                  <property name="text">
+                   <string>Rare</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Epic</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Legendary</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="4" column="0" colspan="2">
+                <widget class="QLabel" name="labelItemCorruption">
+                 <property name="toolTip">
+                  <string notr="true">The Challenge+ Corruption Level. Meaningless in vanilla.</string>
+                 </property>
+                 <property name="text">
+                  <string>Item Corruption:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="2" colspan="2">
+                <widget class="QSpinBox" name="spinBoxItemCorruptedEdit">
+                 <property name="maximum">
+                  <number>2147483647</number>
+                 </property>
+                 <property name="value">
+                  <number>0</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2" colspan="2">
+                <widget class="QSpinBox" name="spinBoxItemQuantityEdit">
+                 <property name="maximum">
+                  <number>9999</number>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
             </item>
-           </layout>
-          </item>
-          <item row="0" column="1">
-           <layout class="QHBoxLayout" name="layoutItemBrowser">
             <item>
              <widget class="QTreeWidget" name="treeWidgetItemBrowser">
               <property name="minimumSize">
@@ -1719,6 +1782,12 @@
               </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QAbstractScrollArea::AdjustIgnored</enum>
+              </property>
+              <property name="textElideMode">
+               <enum>Qt::ElideRight</enum>
               </property>
               <property name="horizontalScrollMode">
                <enum>QAbstractItemView::ScrollPerPixel</enum>
@@ -2402,6 +2471,8 @@
    <property name="font">
     <font>
      <family>Tahoma</family>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <attribute name="toolBarArea">

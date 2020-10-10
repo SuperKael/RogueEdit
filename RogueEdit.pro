@@ -25,3 +25,10 @@ FORMS    += src/forms/mainwindow.ui
 
 RESOURCES += \
     src/resources/images/images.qrc
+
+CONFIG -= debug_and_release debug_and_release_target
+
+install_it.path = $$OUT_PWD\Bin
+install_it.files += $$OUT_PWD\RogueEdit.exe
+
+INSTALLS += install_it

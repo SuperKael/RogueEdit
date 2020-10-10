@@ -9,8 +9,16 @@
 #include "items.h"
 #include "strings.h"
 
-// Define an item as an object with a quantity, level, and rarity
-struct ItemSettings { std::string exp; std::string quantity; std::string rarity; };
+// Define an item as an object with a various properties
+struct ItemSettings
+{
+    std::string quantity;
+    std::string exp;
+    std::string rarity;
+    std::string corrupted;
+    std::string mods[Items::NUM_MOD_SLOTS];
+    std::string modQuantities[Items::NUM_MOD_SLOTS];
+};
 
 class Editor
 {
@@ -19,6 +27,8 @@ public:
     ~Editor();
 
     std::string loadValue(std::string specifier); // Loads a value from file
+    std::string loadReservedName(int id, bool isChip = false); // Loads a GadgetCore reserved registry name
+    int loadReservedID(const std::string& name, bool isChip = false); // Loads a GadgetCore reserved ID
     void replaceValue(std::string specifier,                 // Replaces a value in file
                               std::string oldValue,
                               std::string newValue);
@@ -43,6 +53,8 @@ private:
     std::string _playerDataLocation;    // Location of file
     std::string _tmpDataLocation;       // Location to store temporary data when saving
     std::string* _playerData;           // Pointer to contents of file in memory
+    std::vector<std::string>* _reservedItemIDs;
+    std::vector<std::string>* _reservedChipIDs;
 };
 
 #endif

@@ -24,6 +24,12 @@ namespace Strings
     static const std::string tmpDataSuffix = "/Library/Application Support/unity.DefaultCompany.Roguelands/.txt";
     static const QString appStyle = "Fusion";
     static const QString appStyleSheet = "* { font-family: \"Arial\"; font-size: 11px; font-weight: normal } QTabBar::tab { color: black } QComboBox#comboBoxDifficultyEdit QAbstractScrollArea { min-height: 40px; } QComboBox#comboBoxRaceEdit QAbstractScrollArea { min-height: 480px; } QComboBox#comboBoxClassEdit QAbstractScrollArea { min-height: 300px; } QComboBox#comboBoxAllegianceEdit QAbstractScrollArea { min-height: 80px; } QComboBox#comboBoxVariantEdit QAbstractScrollArea { min-height: 60px; } QComboBox#comboBoxUniformEdit QAbstractScrollArea { min-height: 480px; } QComboBox#comboBoxAugmentEdit QAbstractScrollArea { min-height: 400px; } QComboBox#comboBoxItemRarityEdit QAbstractScrollArea { min-height: 80px; }";
+#elif defined(Q_OS_LINUX)
+    static const std::string playerDataPrefix = "/home/";
+    static const std::string playerDataSuffix = "/.config/unity3d/DefaultCompany/Roguelands/PlayerPrefs.txt";
+    static const std::string tmpDataSuffix = "/.config/unity3d/DefaultCompany/Roguelands/.txt";
+    static const QString appStyle = "Fusion";
+    static const QString appStyleSheet = "* { font-family: \"Arial\"; font-size: 11px; font-weight: normal } QTabBar::tab { color: black } QComboBox#comboBoxDifficultyEdit QAbstractScrollArea { min-height: 40px; } QComboBox#comboBoxRaceEdit QAbstractScrollArea { min-height: 480px; } QComboBox#comboBoxClassEdit QAbstractScrollArea { min-height: 300px; } QComboBox#comboBoxAllegianceEdit QAbstractScrollArea { min-height: 80px; } QComboBox#comboBoxVariantEdit QAbstractScrollArea { min-height: 60px; } QComboBox#comboBoxUniformEdit QAbstractScrollArea { min-height: 480px; } QComboBox#comboBoxAugmentEdit QAbstractScrollArea { min-height: 400px; } QComboBox#comboBoxItemRarityEdit QAbstractScrollArea { min-height: 80px; }";
 #endif
 
     /************ Parsing  ************/
@@ -55,9 +61,13 @@ namespace Strings
     static const std::string faithSpecifier = "pStat5";
     static const std::string characterLevelSpecifier = "level";
     static const std::string characterExperienceSpecifier = "exp";
+    static const std::string itemLevelSpecifier = "lvl";
     static const std::string itemExperienceSpecifier = "exp";
     static const std::string itemQuantitySpecifier = "q";
     static const std::string itemRaritySpecifier = "tier";
+    static const std::string itemCorruptedSpecifier = "corrupted";
+    static const std::string itemModSpecifier = "a";
+    static const std::string itemModQuantitySpecifier = "aL";
     static const std::string allegianceLevelSpecifier = "aq";
     static const std::string allegianceSpecifier = "allegiance";
     static const std::string combatChipSpecifier = "cc";
@@ -80,6 +90,7 @@ namespace Strings
     static const QString itemEditorObjectName = "groupBoxItemEditor";
     static const QString itemNameEditObjectName = "lineEditItemName";
     static const QString itemLevelEditObjectName = "spinBoxItemLevelEdit";
+    static const QString itemExpEditObjectName = "spinBoxItemExpEdit";
     static const QString itemQuantityEditObjectName = "spinBoxItemQuantityEdit";
     static const QString itemRarityEditObjectName = "comboBoxItemRarityEdit";
 
@@ -97,6 +108,7 @@ namespace Strings
 
     // Placeholder where item ID = 0 or some other non-existant ID
     static const QString noItemPlaceholder = "None";
+    static const QString unknownItemPlaceholder = "Unknown ID: ";
 
     // Indexes for top level items
     static const int itemBrowserCombatChipsIndex = 0;
@@ -105,7 +117,7 @@ namespace Strings
     static const int itemBrowserInventoryIndex = 3;
 
     // Constants for determining array size
-    static const int ITEM_TAB_NUM_SPINBOXES = 2;
+    static const int ITEM_TAB_NUM_SPINBOXES = 4;
     static const int ITEM_TAB_NUM_COMBOBOXES = 1;
     static const int NUM_RARITIES = 4;
 
@@ -113,7 +125,7 @@ namespace Strings
     static const std::string rarities[NUM_RARITIES] = { "Normal", "Rare", "Epic", "Legendary" };
 
     // Arrays for use in spinBox iteration
-    static const std::string iSpinBoxSpecifiers[ITEM_TAB_NUM_SPINBOXES] = { itemExperienceSpecifier, itemQuantitySpecifier };
+    static const std::string iSpinBoxSpecifiers[ITEM_TAB_NUM_SPINBOXES] = { itemLevelSpecifier, itemExperienceSpecifier, itemCorruptedSpecifier, itemQuantitySpecifier };
 
     // Arrays for use in comboBox iteration
     static const std::string* iComboBoxArrays[ITEM_TAB_NUM_COMBOBOXES] = { &rarities[0] };
@@ -140,6 +152,7 @@ namespace Strings
     static const QString techEditObjectName = "spinBoxTecVal";
     static const QString faithEditObjectName = "spinBoxFaiVal";
     static const QString characterLevelObjectName = "spinBoxLevelVal";
+    static const QString characterExperienceObjectName = "spinBoxExpVal";
     static const QString allegianceLevelObjectName = "spinBoxAllegianceLevelVal";
     static const QString characterHealthObjectName = "spinBoxHealthVal";
     static const QString characterManaObjectName = "spinBoxManaVal";
@@ -201,17 +214,19 @@ namespace Strings
     /* Arrays for Iteration */
 
     // Total number of spinBoxes and comboBoxes on the character tab
-    static const int CHARACTER_TAB_NUM_SPINBOXES = 10;
+    static const int CHARACTER_TAB_NUM_SPINBOXES = 11;
     static const int CHARACTER_TAB_NUM_COMBOBOXES = 7;
 
     // Arrays for use in spinBox iteration
     static const QString cSpinBoxObjectNames[CHARACTER_TAB_NUM_SPINBOXES] = { vitalityEditObjectName, dexterityEditObjectName, magicEditObjectName,
                                                                               strengthEditObjectName, techEditObjectName, faithEditObjectName,
-                                                                              characterLevelObjectName, allegianceLevelObjectName,
+                                                                              characterLevelObjectName, characterExperienceObjectName,
+                                                                              allegianceLevelObjectName,
                                                                               characterHealthObjectName, characterManaObjectName };
     static const std::string cSpinBoxSpecifiers[CHARACTER_TAB_NUM_SPINBOXES] = { vitalitySpecifier, dexteritySpecifier, magicSpecifier,
                                                                                  strengthSpecifier, techSpecifier, faithSpecifier,
-                                                                                 characterLevelSpecifier, allegianceLevelSpecifier,
+                                                                                 characterLevelSpecifier, characterExperienceSpecifier,
+                                                                                 allegianceLevelSpecifier,
                                                                                  characterCurrentHealthSpecifier, characterCurrentManaSpecifier};
 
     // Arrays for use in comboBox iteration
