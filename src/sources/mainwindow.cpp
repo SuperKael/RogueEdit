@@ -391,6 +391,86 @@ void MainWindow::on_spinBoxExpVal_valueChanged(const QString& newCharacterExperi
     this->simpleSpinBoxChangedHandler(QString::number(requiredExperience + exp), Strings::characterExperienceSpecifier);
 }
 
+void MainWindow::on_spinBoxLevelVal_editingFinished()
+{
+    int targetLevel = level;
+
+    int requiredExperience = 36;
+    int previousExperienceGain = 26;
+
+    int targetRequiredExp = 0;
+
+    // Don't ask me why the experience formula is so odd
+    if (level == 1) requiredExperience = 0;
+    else if (level == 2) requiredExperience = 10;
+    else
+    {
+        int i = 3;
+        for (; i < level; i++)
+        {
+            previousExperienceGain += 3 * i;
+            requiredExperience += previousExperienceGain;
+        }
+        if (requiredExperience <= exp) targetRequiredExp = requiredExperience;
+        for (; requiredExperience <= exp; i++)
+        {
+            exp -= requiredExperience;
+            level++;
+            previousExperienceGain += 3 * i;
+            requiredExperience += previousExperienceGain;
+        }
+    }
+
+    if (level != targetLevel)
+    {
+        exp = targetRequiredExp - 1;
+        level = targetLevel;
+        if (level == 1) requiredExperience = 0;
+        else if (level == 2) requiredExperience = 10;
+        else
+        {
+            for (int i = 3; i < level; i++)
+            {
+                previousExperienceGain += 3 * i;
+                requiredExperience += previousExperienceGain;
+            }
+        }
+        this->simpleSpinBoxChangedHandler(QString::number(requiredExperience), Strings::characterExperienceSpecifier);
+    }
+
+    this->findChild<QSpinBox*>(Strings::characterLevelObjectName)->setValue(level);
+    this->findChild<QSpinBox*>(Strings::characterExperienceObjectName)->setValue(exp);
+}
+
+void MainWindow::on_spinBoxExpVal_editingFinished()
+{
+    int requiredExperience = 36;
+    int previousExperienceGain = 26;
+
+    // Don't ask me why the experience formula is so odd
+    if (level == 1) requiredExperience = 0;
+    else if (level == 2) requiredExperience = 10;
+    else
+    {
+        int i = 3;
+        for (; i < level; i++)
+        {
+            previousExperienceGain += 3 * i;
+            requiredExperience += previousExperienceGain;
+        }
+        for (; requiredExperience <= exp; i++)
+        {
+            exp -= requiredExperience;
+            level++;
+            previousExperienceGain += 3 * i;
+            requiredExperience += previousExperienceGain;
+        }
+    }
+
+    this->findChild<QSpinBox*>(Strings::characterLevelObjectName)->setValue(level);
+    this->findChild<QSpinBox*>(Strings::characterExperienceObjectName)->setValue(exp);
+}
+
 void MainWindow::on_spinBoxAllegianceLevelVal_valueChanged(const QString& newAllegianceLevel)
 {
     this->simpleSpinBoxChangedHandler(newAllegianceLevel, Strings::allegianceLevelSpecifier);
@@ -459,7 +539,7 @@ void MainWindow::updateiSpinandComboBoxes(QTreeWidgetItem* current)
         {
             iSpinBoxes[i]->setValue(itemLevel);
         }
-        else if (iSpinBoxes[i]->objectName() == Strings::itemExpEditObjectName)
+        else if (iSpinBoxes[i]->objectName() == Strings::itemExperienceEditObjectName)
         {
             iSpinBoxes[i]->setValue(itemExp);
         }
@@ -630,6 +710,9 @@ void MainWindow::on_spinBoxItemLevelEdit_valueChanged(const QString& newLevel)
     // Replace the value and update itemSettings
     this->_e->replaceValue(this->_e->currentID + index + Strings::itemExperienceSpecifier, oldValue, std::to_string(newValue + itemExp));
     this->_e->itemSettings[std::stoi(index)].exp = std::to_string(newValue + itemExp);
+
+    this->findChild<QSpinBox*>(Strings::itemLevelEditObjectName)->setValue(itemLevel);
+    this->findChild<QSpinBox*>(Strings::itemExperienceEditObjectName)->setValue(itemExp);
 }
 
 void MainWindow::on_spinBoxItemExpEdit_valueChanged(const QString& newExperience)
@@ -646,6 +729,9 @@ void MainWindow::on_spinBoxItemExpEdit_valueChanged(const QString& newExperience
     // Replace the value and update itemSettings
     this->_e->replaceValue(this->_e->currentID + index + Strings::itemExperienceSpecifier, oldValue, std::to_string(newValue + itemExp));
     this->_e->itemSettings[std::stoi(index)].exp = std::to_string(newValue + itemExp);
+
+    this->findChild<QSpinBox*>(Strings::itemLevelEditObjectName)->setValue(itemLevel);
+    this->findChild<QSpinBox*>(Strings::itemExperienceEditObjectName)->setValue(itemExp);
 }
 
 void MainWindow::on_spinBoxItemQuantityEdit_valueChanged(const QString& newQuantity)

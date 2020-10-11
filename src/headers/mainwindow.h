@@ -61,6 +61,8 @@ private slots:
     void on_spinBoxFaiVal_valueChanged(const QString& newFai);
     void on_spinBoxLevelVal_valueChanged(const QString& newCharacterLevel);
     void on_spinBoxExpVal_valueChanged(const QString& newCharacterExperience);
+    void on_spinBoxLevelVal_editingFinished();
+    void on_spinBoxExpVal_editingFinished();
     void on_spinBoxAllegianceLevelVal_valueChanged(const QString& newAllegianceLevel);
     void on_spinBoxManaVal_valueChanged(const QString &newMana);
     void on_spinBoxHealthVal_valueChanged(const QString &newHealth);

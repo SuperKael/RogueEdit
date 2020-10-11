@@ -90,7 +90,7 @@ namespace Strings
     static const QString itemEditorObjectName = "groupBoxItemEditor";
     static const QString itemNameEditObjectName = "lineEditItemName";
     static const QString itemLevelEditObjectName = "spinBoxItemLevelEdit";
-    static const QString itemExpEditObjectName = "spinBoxItemExpEdit";
+    static const QString itemExperienceEditObjectName = "spinBoxItemExpEdit";
     static const QString itemQuantityEditObjectName = "spinBoxItemQuantityEdit";
     static const QString itemRarityEditObjectName = "comboBoxItemRarityEdit";
 
