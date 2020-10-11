@@ -404,23 +404,23 @@ QCompleter* MainWindow::determineCompleter(QTreeWidgetItem* currentItem)
     QString typeName = currentItem->text(1);
 
     if (parentName == Strings::itemBrowserCombatChipsTitle)
-        return new QCompleter(Items::combatChipList);
+        return Items::combatChipCompleter;
     else if (parentName == Strings::itemBrowserDronesTitle)
-        return new QCompleter(Items::droneList);
+        return Items::droneCompleter;
     else if (parentName == Strings::itemBrowserInventoryTitle)
-        return new QCompleter(Items::itemList);
+        return Items::itemCompleter;
     else if (parentName == Strings::itemBrowserEquippedTitle)
     {
         if (typeName == Strings::itemBrowserEquippedWeaponTitle)
-            return new QCompleter(Items::weaponList);
+            return Items::weaponCompleter;
         else if (typeName == Strings::itemBrowserEquippedShieldTitle)
-            return new QCompleter(Items::shieldList);
+            return Items::shieldCompleter;
         else if (typeName == Strings::itemBrowserEquippedArmorTitle)
-            return new QCompleter(Items::armorList);
+            return Items::armorCompleter;
         else if (typeName == Strings::itemBrowserEquippedHelmetTitle)
-            return new QCompleter(Items::helmList);
+            return Items::helmCompleter;
         else if (typeName == Strings::itemBrowserEquippedRingOneTitle || typeName == Strings::itemBrowserEquippedRingTwoTitle)
-            return new QCompleter(Items::ringList);
+            return Items::ringCompleter;
     }
 
     // If nothing worked, be very sad

@@ -72,7 +72,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tabCharacter">
          <attribute name="title">
@@ -113,6 +113,11 @@
                 </property>
                 <item>
                  <widget class="QComboBox" name="comboBoxAugmentEdit">
+                  <item>
+                   <property name="text">
+                    <string>None</string>
+                   </property>
+                  </item>
                   <item>
                    <property name="text">
                     <string>Baby Silver</string>

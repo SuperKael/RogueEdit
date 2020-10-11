@@ -42,6 +42,16 @@ namespace Items
     static QStringList armorList = {"4th Age Armor","Aether Armor","Aku Armor","Apocolypse A","Axelark's Armor","Azazel's Armor","Baalfog's Suit","Bolgon's Armor","Broccoli Armor","Bruiser Armor","Brute Armor","Catastrophia A","Champion Armor","Chaos Armor","Darknight Armor","Deathgod Armor","Destruction Armor","Deus Armor","Dredger Armor","Drifter Armor","Dunecloth Armor","Dunerider Armor","Elite Armor","Exodus A","Fellbug A","Firegod Armor","Force Armor","Ghost Armor","Glaedria A","Helloworld Armor","Heroic Armor","Inferno Armor","Ironclad A","Ironforge Armor","Isaac Armor","Ithaca's Armor","Krabshell Armor","Kraken Armor","Leviathan Armor","Maelstrom Armor","Might Shroom A","Mykonogre A","Nautilus Armor","Oni Armor","Onslaught Armor","Plasma Armor","Pyroclasm Armor","Queen's Armor","Rapture Armor","Recon Armor","Recruit Armor","Ruin Armor","Shatterspell Armor","Siege Armor","Titan Armor","Towermage Armor","Ultima Armor","Ultrom Armor","Vigilante Armor","Vorpal Armor","Voyager Armor","Whiteworl Armor","Wraith Armor","Yojimbo Armor","Yoshimitsu Armor"};
     static QStringList ringList = {"Anelice Ring","Brym Ring","Ezerius Ring","Falstadt Ring","Gallahad Ring","Gromwell Ring","Owain Ring","Perceval Ring","Roehn Ring","Tydus Ring","Vaati Ring"};
 
+    // Now initialize the completers themselves
+    static QCompleter* itemCompleter = new QCompleter(itemList);
+    static QCompleter* combatChipCompleter = new QCompleter(combatChipList);
+    static QCompleter* droneCompleter = new QCompleter(droneList);
+    static QCompleter* weaponCompleter = new QCompleter(weaponList);
+    static QCompleter* shieldCompleter = new QCompleter(shieldList);
+    static QCompleter* helmCompleter = new QCompleter(helmList);
+    static QCompleter* armorCompleter = new QCompleter(armorList);
+    static QCompleter* ringCompleter = new QCompleter(ringList);
+
     /* Required experience for given item levels*/
     static const int itemLevel1exp = 0;
     static const int itemLevel2exp = 101;

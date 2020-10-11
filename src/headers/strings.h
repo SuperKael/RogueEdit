@@ -54,10 +54,10 @@ namespace Strings
     static const std::string uniformSpecifier = "uniform";
     static const std::string augmentSpecifier = "augment";
     static const std::string vitalitySpecifier = "pStat0";
-    static const std::string dexteritySpecifier = "pStat1";
-    static const std::string magicSpecifier = "pStat2";
-    static const std::string strengthSpecifier = "pStat3";
-    static const std::string techSpecifier = "pStat4";
+    static const std::string strengthSpecifier = "pStat1";
+    static const std::string dexteritySpecifier = "pStat2";
+    static const std::string techSpecifier = "pStat3";
+    static const std::string magicSpecifier = "pStat4";
     static const std::string faithSpecifier = "pStat5";
     static const std::string characterLevelSpecifier = "level";
     static const std::string characterExperienceSpecifier = "exp";
@@ -202,10 +202,10 @@ namespace Strings
                                                         "Metalgear", "Phoenix", "Cobalt Mage", "Peasant", "Overworld" };
 
     /* Augments */
-    static const std::string augments[NUM_AUGMENTS] = { "", "Crusader Hat", "Rogue Bandana", "Berserker Scarf", "Mage Hat", "Crown", "Shmoo Hat",
-                                                        "Glibglob Hat", "Beats by Boizu", "Eyepod Hat", "Slime Hat", "Slime Hat",
-                                                        "Mech City Beanie", "Lucky Pumpkin", "Eye Gadget", "Baby Silver", "Oculus Goggles",
-                                                        "Chamcham Hat", "Demon Horns", "Forsaker Mask", "Shroom Hat", "Halo", "Creator Mask",
+    static const std::string augments[NUM_AUGMENTS] = { "None", "Crusader Hat", "Rogue Bandana", "Berserker Scarf", "Mage Hat", "Crown", "Shmoo Hat",
+                                                        "Glibglob Hat", "Beats by Boizu", "Eyepod Hat", "Slime Hat", "Mech City Beanie",
+                                                        "Lucky Pumpkin", "Eye Gadget", "Baby Silver", "Oculus Goggles", "Chamcham Hat",
+                                                        "Demon Horns", "Forsaker Mask", "Shroom Hat", "Halo", "Creator Mask",
                                                         "Rebellion Headpiece", "Gas Mask" };
 
     /* Allegiances */
@@ -218,13 +218,13 @@ namespace Strings
     static const int CHARACTER_TAB_NUM_COMBOBOXES = 7;
 
     // Arrays for use in spinBox iteration
-    static const QString cSpinBoxObjectNames[CHARACTER_TAB_NUM_SPINBOXES] = { vitalityEditObjectName, dexterityEditObjectName, magicEditObjectName,
-                                                                              strengthEditObjectName, techEditObjectName, faithEditObjectName,
+    static const QString cSpinBoxObjectNames[CHARACTER_TAB_NUM_SPINBOXES] = { vitalityEditObjectName, strengthEditObjectName, dexterityEditObjectName,
+                                                                              techEditObjectName, magicEditObjectName, faithEditObjectName,
                                                                               characterLevelObjectName, characterExperienceObjectName,
                                                                               allegianceLevelObjectName,
                                                                               characterHealthObjectName, characterManaObjectName };
-    static const std::string cSpinBoxSpecifiers[CHARACTER_TAB_NUM_SPINBOXES] = { vitalitySpecifier, dexteritySpecifier, magicSpecifier,
-                                                                                 strengthSpecifier, techSpecifier, faithSpecifier,
+    static const std::string cSpinBoxSpecifiers[CHARACTER_TAB_NUM_SPINBOXES] = { vitalitySpecifier, strengthSpecifier, dexteritySpecifier,
+                                                                                 techSpecifier, magicSpecifier, faithSpecifier,
                                                                                  characterLevelSpecifier, characterExperienceSpecifier,
                                                                                  allegianceLevelSpecifier,
                                                                                  characterCurrentHealthSpecifier, characterCurrentManaSpecifier};
