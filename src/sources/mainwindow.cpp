@@ -765,3 +765,16 @@ void MainWindow::on_comboBoxItemRarityEdit_currentIndexChanged(const QString& ne
     this->_e->replaceValue(this->_e->currentID + index + Strings::itemRaritySpecifier, oldValue, std::to_string(newValue));
     this->_e->itemSettings[std::stoi(index)].rarity = std::to_string(newValue);
 }
+
+
+void MainWindow::on_spinBoxItemCorruptedEdit_valueChanged(const QString& newCorrupted)
+{
+    // Determine the old value
+    QTreeWidgetItem* current = this->findChild<QTreeWidget*>(Strings::itemBrowserObjectName)->currentItem();
+    std::string index = current->text(2).toStdString();
+    std::string oldValue = this->_e->itemSettings[std::stoi(index)].corrupted;
+
+    // Update playerData and itemSettings
+    this->_e->replaceValue(this->_e->currentID + index + Strings::itemCorruptedSpecifier, oldValue, newCorrupted.toStdString());
+    this->_e->itemSettings[std::stoi(index)].corrupted = newCorrupted.toStdString();
+}

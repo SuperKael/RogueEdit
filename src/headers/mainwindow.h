@@ -72,8 +72,9 @@ private slots:
     void on_lineEditItemName_editingFinished();
     void on_spinBoxItemLevelEdit_valueChanged(const QString& newLevel);
     void on_spinBoxItemExpEdit_valueChanged(const QString& newExperience);
-    void on_spinBoxItemQuantityEdit_valueChanged(const QString& newValue);
-    void on_comboBoxItemRarityEdit_currentIndexChanged(const QString& newQuantity);
+    void on_spinBoxItemQuantityEdit_valueChanged(const QString& newQuantity);
+    void on_comboBoxItemRarityEdit_currentIndexChanged(const QString& newRarity);
+    void on_spinBoxItemCorruptedEdit_valueChanged(const QString& newCorrupted);
 
 private:
     Editor* _e;
